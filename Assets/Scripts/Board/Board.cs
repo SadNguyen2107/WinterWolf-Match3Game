@@ -7,70 +7,6 @@ using UnityEngine;
 
 public class Board
 {
-
-    // Returns true if all bottom cells are filled
-    public bool IsBottomBoardFull()
-    {
-        foreach (var cell in m_bottomCells)
-        {
-            if (cell.IsEmpty) return false;
-        }
-        return true;
-    }
-
-    public NormalItem.eNormalType? GetMostFrequentTypeOnMainBoard()
-    {
-        var typeCounts = new Dictionary<NormalItem.eNormalType, int>();
-        foreach (var cell in m_cells)
-        {
-            if (!cell.IsEmpty && cell.Item is NormalItem n)
-            {
-                if (!typeCounts.ContainsKey(n.ItemType))
-                    typeCounts[n.ItemType] = 0;
-                typeCounts[n.ItemType]++;
-            }
-        }
-        if (typeCounts.Count == 0) return null;
-        return typeCounts.OrderByDescending(kv => kv.Value).First().Key;
-    }
-
-    // Returns list of NormalItem.eNormalType that have exactly 'count' items in bottom board
-    public List<NormalItem.eNormalType> GetBottomGroupsWithCount(int count)
-    {
-        return m_bottomCells
-            .Where(c => !c.IsEmpty && c.Item is NormalItem)
-            .GroupBy(c => ((NormalItem)c.Item).ItemType)
-            .Where(g => g.Count() == count)
-            .Select(g => g.Key)
-            .ToList();
-    }
-
-    // Returns first cell in main board with given type
-    public Cell GetFirstCellOfType(NormalItem.eNormalType type)
-    {
-        foreach (var cell in m_cells)
-        {
-            if (!cell.IsEmpty && cell.Item is NormalItem n && n.ItemType == type)
-                return cell;
-        }
-        return null;
-    }
-
-    public bool IsWin()
-    {
-        return m_cells.Cast<Cell>().All(c => c.IsEmpty);
-    }
-
-    public Cell GetFirstMovableCell()
-    {
-        foreach (var cell in m_cells)
-        {
-            if (!cell.IsEmpty && cell.Item is NormalItem)
-                return cell;
-        }
-        return null;
-    }
-
     public enum eMatchDirection
     {
         NONE,
@@ -376,6 +312,69 @@ public class Board
                 }
             }
         }
+    }
+
+    // Returns true if all bottom cells are filled
+    public bool IsBottomBoardFull()
+    {
+        foreach (var cell in m_bottomCells)
+        {
+            if (cell.IsEmpty) return false;
+        }
+        return true;
+    }
+
+    public NormalItem.eNormalType? GetMostFrequentTypeOnMainBoard()
+    {
+        var typeCounts = new Dictionary<NormalItem.eNormalType, int>();
+        foreach (var cell in m_cells)
+        {
+            if (!cell.IsEmpty && cell.Item is NormalItem n)
+            {
+                if (!typeCounts.ContainsKey(n.ItemType))
+                    typeCounts[n.ItemType] = 0;
+                typeCounts[n.ItemType]++;
+            }
+        }
+        if (typeCounts.Count == 0) return null;
+        return typeCounts.OrderByDescending(kv => kv.Value).First().Key;
+    }
+
+    // Returns list of NormalItem.eNormalType that have exactly 'count' items in bottom board
+    public List<NormalItem.eNormalType> GetBottomGroupsWithCount(int count)
+    {
+        return m_bottomCells
+            .Where(c => !c.IsEmpty && c.Item is NormalItem)
+            .GroupBy(c => ((NormalItem)c.Item).ItemType)
+            .Where(g => g.Count() == count)
+            .Select(g => g.Key)
+            .ToList();
+    }
+
+    // Returns first cell in main board with given type
+    public Cell GetFirstCellOfType(NormalItem.eNormalType type)
+    {
+        foreach (var cell in m_cells)
+        {
+            if (!cell.IsEmpty && cell.Item is NormalItem n && n.ItemType == type)
+                return cell;
+        }
+        return null;
+    }
+
+    public bool IsWin()
+    {
+        return m_cells.Cast<Cell>().All(c => c.IsEmpty);
+    }
+
+    public Cell GetFirstMovableCell()
+    {
+        foreach (var cell in m_cells)
+        {
+            if (!cell.IsEmpty && cell.Item is NormalItem)
+                return cell;
+        }
+        return null;
     }
 
     internal void Fill()

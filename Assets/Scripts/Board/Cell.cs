@@ -4,6 +4,29 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
+    public int BoardX { get; private set; }
+
+    public int BoardY { get; private set; }
+
+    public Item Item { get; private set; }
+
+    public Cell NeighbourUp { get; set; }
+
+    public Cell NeighbourRight { get; set; }
+
+    public Cell NeighbourBottom { get; set; }
+
+    public Cell NeighbourLeft { get; set; }
+
+
+    public bool IsEmpty => Item == null;
+
+    public void Setup(int cellX, int cellY)
+    {
+        this.BoardX = cellX;
+        this.BoardY = cellY;
+    }
+
     private void OnMouseDown()
     {
         // Only allow return if this is a bottom cell and has an item
@@ -28,28 +51,6 @@ public class Cell : MonoBehaviour
     {
         // Assuming bottom board cells have BoardY == -1
         return !IsEmpty && Item is NormalItem && BoardY != -1;
-    }
-    public int BoardX { get; private set; }
-
-    public int BoardY { get; private set; }
-
-    public Item Item { get; private set; }
-
-    public Cell NeighbourUp { get; set; }
-
-    public Cell NeighbourRight { get; set; }
-
-    public Cell NeighbourBottom { get; set; }
-
-    public Cell NeighbourLeft { get; set; }
-
-
-    public bool IsEmpty => Item == null;
-
-    public void Setup(int cellX, int cellY)
-    {
-        this.BoardX = cellX;
-        this.BoardY = cellY;
     }
 
     public bool IsNeighbour(Cell other)

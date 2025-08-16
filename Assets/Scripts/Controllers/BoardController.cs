@@ -7,119 +7,6 @@ using UnityEngine;
 
 public class BoardController : MonoBehaviour
 {
-    public void AutoloseButtonClicked()
-    {
-        if (!isAutoplaying)
-        {
-            StartCoroutine(AutoloseCoroutine());
-        }
-    }
-
-    private IEnumerator AutoloseCoroutine()
-    {
-        isAutoplaying = true;
-        while (!m_board.IsWin())
-        {
-            Cell cellToMove = m_board.GetFirstMovableCell();
-            if (cellToMove == null) break;
-            m_board.TryMoveToBottom(cellToMove);
-            yield return new WaitForSeconds(0.5f);
-            // Stop if bottom board is full (lose condition)
-            if (m_board.GetBottomGroupsWithCount(1).Count == 0 && m_board.GetBottomGroupsWithCount(2).Count == 0)
-            {
-                if (m_board.IsBottomBoardFull())
-                {
-                    break;
-                }
-            }
-        }
-        isAutoplaying = false;
-    }
-
-    private bool isAutoplaying = false;
-
-    public void AutoplayButtonClicked()
-    {
-        if (!isAutoplaying)
-        {
-            StartCoroutine(AutoplayCoroutine());
-        }
-    }
-
-    private IEnumerator AutoplayCoroutine()
-    {
-        isAutoplaying = true;
-        while (!m_board.IsWin())
-        {
-            bool madeMove = false;
-            // 1. Try to complete a match in the bottom board
-            var bottomGroups = m_board.GetBottomGroupsWithCount(2);
-            if (bottomGroups.Count > 0)
-            {
-                var targetType = bottomGroups[0];
-                while (true)
-                {
-                    var cellToMove = m_board.GetFirstCellOfType(targetType);
-                    if (cellToMove == null) break;
-                    bool moved = m_board.TryMoveToBottom(cellToMove);
-                    if (moved)
-                    {
-                        madeMove = true;
-                        yield return new WaitForSeconds(0.5f);
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                // 2. Move all items of the most frequent type
-                var freqType = m_board.GetMostFrequentTypeOnMainBoard();
-                if (freqType.HasValue)
-                {
-                    while (true)
-                    {
-                        var cellToMove = m_board.GetFirstCellOfType(freqType.Value);
-                        if (cellToMove == null) break;
-                        bool moved = m_board.TryMoveToBottom(cellToMove);
-                        if (moved)
-                        {
-                            madeMove = true;
-                            yield return new WaitForSeconds(0.5f);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    // 3. If still not, pick any valid cell
-                    while (true)
-                    {
-                        var cellToMove = m_board.GetFirstMovableCell();
-                        if (cellToMove == null) break;
-                        bool moved = m_board.TryMoveToBottom(cellToMove);
-                        if (moved)
-                        {
-                            madeMove = true;
-                            yield return new WaitForSeconds(0.5f);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
-            }
-            if (!madeMove) break;
-        }
-        isAutoplaying = false;
-    }
-
     public event Action OnMoveEvent = delegate { };
 
     public bool IsBusy { get; private set; }
@@ -252,6 +139,119 @@ public class BoardController : MonoBehaviour
                 ResetRayCast();
             }
         }
+    }
+
+    public void AutoloseButtonClicked()
+    {
+        if (!isAutoplaying)
+        {
+            StartCoroutine(AutoloseCoroutine());
+        }
+    }
+
+    private IEnumerator AutoloseCoroutine()
+    {
+        isAutoplaying = true;
+        while (!m_board.IsWin())
+        {
+            Cell cellToMove = m_board.GetFirstMovableCell();
+            if (cellToMove == null) break;
+            m_board.TryMoveToBottom(cellToMove);
+            yield return new WaitForSeconds(0.5f);
+            // Stop if bottom board is full (lose condition)
+            if (m_board.GetBottomGroupsWithCount(1).Count == 0 && m_board.GetBottomGroupsWithCount(2).Count == 0)
+            {
+                if (m_board.IsBottomBoardFull())
+                {
+                    break;
+                }
+            }
+        }
+        isAutoplaying = false;
+    }
+
+    private bool isAutoplaying = false;
+
+    public void AutoplayButtonClicked()
+    {
+        if (!isAutoplaying)
+        {
+            StartCoroutine(AutoplayCoroutine());
+        }
+    }
+
+    private IEnumerator AutoplayCoroutine()
+    {
+        isAutoplaying = true;
+        while (!m_board.IsWin())
+        {
+            bool madeMove = false;
+            // 1. Try to complete a match in the bottom board
+            var bottomGroups = m_board.GetBottomGroupsWithCount(2);
+            if (bottomGroups.Count > 0)
+            {
+                var targetType = bottomGroups[0];
+                while (true)
+                {
+                    var cellToMove = m_board.GetFirstCellOfType(targetType);
+                    if (cellToMove == null) break;
+                    bool moved = m_board.TryMoveToBottom(cellToMove);
+                    if (moved)
+                    {
+                        madeMove = true;
+                        yield return new WaitForSeconds(0.5f);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                // 2. Move all items of the most frequent type
+                var freqType = m_board.GetMostFrequentTypeOnMainBoard();
+                if (freqType.HasValue)
+                {
+                    while (true)
+                    {
+                        var cellToMove = m_board.GetFirstCellOfType(freqType.Value);
+                        if (cellToMove == null) break;
+                        bool moved = m_board.TryMoveToBottom(cellToMove);
+                        if (moved)
+                        {
+                            madeMove = true;
+                            yield return new WaitForSeconds(0.5f);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    // 3. If still not, pick any valid cell
+                    while (true)
+                    {
+                        var cellToMove = m_board.GetFirstMovableCell();
+                        if (cellToMove == null) break;
+                        bool moved = m_board.TryMoveToBottom(cellToMove);
+                        if (moved)
+                        {
+                            madeMove = true;
+                            yield return new WaitForSeconds(0.5f);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!madeMove) break;
+        }
+        isAutoplaying = false;
     }
 
     private void ResetRayCast()
