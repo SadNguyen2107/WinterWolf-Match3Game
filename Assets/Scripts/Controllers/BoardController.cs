@@ -91,7 +91,7 @@ public class BoardController : MonoBehaviour
             if (hit.collider != null)
             {
                 Cell cell = hit.collider.GetComponent<Cell>();
-                if (cell != null && cell.Item != null && cell.IsNormalCell()) // You may need to adjust IsNormalCell()
+                if (cell != null && cell.Item != null && cell.IsNormalCell())
                 {
                     bool moved = m_board.TryMoveToBottom(cell);
                     if (moved)
