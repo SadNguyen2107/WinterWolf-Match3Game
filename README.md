@@ -1,4 +1,4 @@
-# WinterWolf-Game
+# MATCH 3 TILE
 
 This README documents the features and code changes implemented by GitHub Copilot in your Unity Match 3 project.
 
