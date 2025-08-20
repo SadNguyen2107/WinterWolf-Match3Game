@@ -10,8 +10,7 @@ public class GameManager : MonoBehaviour
 
     public enum eLevelMode
     {
-        TIMER,
-        MOVES,
+        NORMAL,
         TIME_ATTACK
     }
 
@@ -89,16 +88,10 @@ public class GameManager : MonoBehaviour
         CurrentLevelMode = mode;
         m_boardController = new GameObject("BoardController").AddComponent<BoardController>();
         m_boardController.StartGame(this, m_gameSettings);
-
-        if (mode == eLevelMode.MOVES)
+        if (mode == eLevelMode.NORMAL)
         {
-            m_levelCondition = this.gameObject.AddComponent<LevelMoves>();
+            m_levelCondition = this.gameObject.AddComponent<LevelNormal>();
             m_levelCondition.Setup(m_gameSettings.LevelMoves, m_uiMenu.GetLevelConditionView(), m_boardController);
-        }
-        else if (mode == eLevelMode.TIMER)
-        {
-            m_levelCondition = this.gameObject.AddComponent<LevelTime>();
-            m_levelCondition.Setup(m_gameSettings.LevelMoves, m_uiMenu.GetLevelConditionView(), this);
         }
         else if (mode == eLevelMode.TIME_ATTACK)
         {

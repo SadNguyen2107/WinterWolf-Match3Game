@@ -10,14 +10,6 @@ public class Cell : MonoBehaviour
 
     public Item Item { get; private set; }
 
-    public Cell NeighbourUp { get; set; }
-
-    public Cell NeighbourRight { get; set; }
-
-    public Cell NeighbourBottom { get; set; }
-
-    public Cell NeighbourLeft { get; set; }
-
 
     public bool IsEmpty => Item == null;
 

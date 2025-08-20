@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class UIPanelMain : MonoBehaviour, IMenu
 {
-    [SerializeField] private Button btnTimer;
 
     [SerializeField] private Button btnMoves;
     [SerializeField] private Button btnTimeAttack;
@@ -20,14 +19,12 @@ public class UIPanelMain : MonoBehaviour, IMenu
         btnMoves.onClick.AddListener(OnClickMoves);
         btnAutoPlay.onClick.AddListener(OnClickAutoPlay);
         btnAutoLose.onClick.AddListener(OnClickAutoLose);
-        // btnTimer.onClick.AddListener(OnClickTimer);
         if (btnTimeAttack) btnTimeAttack.onClick.AddListener(OnClickTimeAttack);
     }
 
     private void OnDestroy()
     {
         if (btnMoves) btnMoves.onClick.RemoveAllListeners();
-        // if (btnTimer) btnTimer.onClick.RemoveAllListeners();
         if (btnTimeAttack) btnTimeAttack.onClick.RemoveAllListeners();
         if (btnAutoPlay) btnAutoPlay.onClick.RemoveAllListeners();
         if (btnAutoLose) btnAutoLose.onClick.RemoveAllListeners();
@@ -43,11 +40,6 @@ public class UIPanelMain : MonoBehaviour, IMenu
     public void Setup(UIMainManager mngr)
     {
         m_mngr = mngr;
-    }
-
-    private void OnClickTimer()
-    {
-        m_mngr.LoadLevelTimer();
     }
 
     private void OnClickAutoPlay()
@@ -67,7 +59,7 @@ public class UIPanelMain : MonoBehaviour, IMenu
 
     private void OnClickMoves()
     {
-        m_mngr.LoadLevelMoves();
+        m_mngr.LoadLevelNormal();
     }
 
     public void Show()

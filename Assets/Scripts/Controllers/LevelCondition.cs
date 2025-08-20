@@ -33,7 +33,7 @@ public class LevelCondition : MonoBehaviour
     {
         m_conditionCompleted = true;
 
-        ConditionCompleteEvent();
+        ConditionCompleteEvent?.Invoke();
     }
 
     protected virtual void OnDestroy()

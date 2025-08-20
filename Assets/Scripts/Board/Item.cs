@@ -110,8 +110,6 @@ public class Item
         }
     }
 
-
-
     internal void AnimateForHint()
     {
         if (View)
